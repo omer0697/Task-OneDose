@@ -2,11 +2,18 @@ import React from 'react';
 import { Button, Checkbox, Form, Input } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import './SignInForm.css'; // Make sure to create this CSS file and import it here
+import axios from "../../app/api";
 
 const SignInForm = () => {
   const navigate = useNavigate();
   const onFinish = (values) => {
-    console.log('Received values:', values);
+    axios.post('login', values)
+      .then(response => {
+        console.log(response);
+        const accessToken = response.data.access_token;
+        localStorage.setItem('accessToken', accessToken);
+        navigate('/');
+      })
   };
 
   return (
@@ -19,8 +26,8 @@ const SignInForm = () => {
         className='flex flex-col gap-2'
       >
         <Form.Item
-          label="Kullanıcı Adı"
-          name="username"
+          label="email"
+          name="email"
           rules={[{ required: true, message: 'Lütfen kullanıcı adınızı giriniz!' }]}
           className="form-item-custom"
         >
