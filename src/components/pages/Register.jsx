@@ -9,6 +9,7 @@ const Register = () => {
     const navigate = useNavigate();
     const isAuthenticated = useSelector(selectIsAuthenticated);
     const [loading, setLoading] = useState(true);
+    const [SubmitLoading, setSubmitLoading] = useState(false);
 
     useEffect(() => {
         if (isAuthenticated) {
@@ -23,13 +24,18 @@ const Register = () => {
     }
     
     const onFinish = (values) => {
+        setSubmitLoading(true);
         axios.post('register', values)
         .then(response => {
             console.log(response);
             const accessToken = response.data.access_token;
             localStorage.setItem('accessToken', accessToken);
             navigate('/');
-        })
+        }).catch(error => {
+            console.log(error);
+        }).finally(() => {
+            setSubmitLoading(false);
+        });
     };
     
     return (
@@ -76,7 +82,7 @@ const Register = () => {
                     </Form.Item>
                 
                     <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-                        <Button type="primary" htmlType="submit">
+                        <Button loading={SubmitLoading} type="primary" htmlType="submit">
                         Submit
                         </Button>
                     </Form.Item>

@@ -1,19 +1,25 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Button, Checkbox, Form, Input } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import './SignInForm.css'; // Make sure to create this CSS file and import it here
 import axios from "../../app/api";
 
 const SignInForm = () => {
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const onFinish = (values) => {
+    setLoading(true);
     axios.post('login', values)
       .then(response => {
         console.log(response);
         const accessToken = response.data.access_token;
         localStorage.setItem('accessToken', accessToken);
         navigate('/');
-      })
+      }).catch(error => {
+        console.log(error);
+      }).finally(() => {
+        setLoading(false);
+      });
   };
 
   return (
@@ -50,7 +56,7 @@ const SignInForm = () => {
         </div>
 
         <Form.Item className="form-item-custom">
-          <Button className='w-full' type="primary" htmlType="submit" size='large'>
+          <Button loading={loading} className='w-full' type="primary" htmlType="submit" size='large'>
             Giriş Yap
           </Button>
         </Form.Item>
