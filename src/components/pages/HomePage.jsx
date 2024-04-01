@@ -107,7 +107,7 @@ const HomePage = () => {
     <div>
       <div className=' flex flex-col gap-5'>
         <Input size='large' placeholder="Search" onChange={(e) => setSearch(e.target.value)}/>
-        <CustomTable key={favorites} columns={columns} data={data}/>
+        <CustomTable columns={columns} data={data}/>
       </div>
     </div>
   )

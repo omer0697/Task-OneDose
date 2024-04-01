@@ -16,6 +16,7 @@ const CustomTable = ({columns, data}) => {
   return (
     <div className=''>
       <Table
+        rowKey={(record) => record.id}
         columns={columns}
         dataSource={data}
       />
